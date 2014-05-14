@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #   Copyright 2012 Sergey Kirillov
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,7 +60,7 @@ else:
     sources = libsass_sources + ["sass.cpp"]
     cmdclass = {}
 
-ext_modules = [Extension("sass", 
+ext_modules = [Extension("sass",
                sources,
                libraries=['stdc++'],
                library_dirs=['./libsass'],
@@ -74,14 +75,15 @@ setup(
   version = '2.2',
   author = 'Sergey Kirilov',
   author_email = 'sergey.kirillov@gmail.com',
-  url='https://github.com/pistolero/python-scss', 
+  url='https://github.com/pistolero/python-scss',
   install_requires=[],
   extras_require = {
 #    'develop': ['Cython']
   },
   tests_require = ['nose'],
-  license="Apache License 2.0",   
-  keywords="sass scss libsass",  
+  test_suite = 'test',
+  license="Apache License 2.0",
+  keywords="sass scss libsass",
   description='Python bindings for libsass',
   long_description=open(os.path.join(here, 'README.rst'), 'rb').read().decode('utf-8')
 )
