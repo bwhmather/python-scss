@@ -12,33 +12,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+from unittest import TestCase
+from os import path
 
 import sass
-from nose.tools import eq_, assert_equal, raises
 
-@raises(sass.CompileError)
-def test1():
-	result = sass.compile_string(b'asd', '', sass.SASS_STYLE_NESTED)
-	eq_(result, b'asd')
-
-
-def test2():
-	result = sass.compile_string(b'''table.hl {
-  margin: 2em 0;
-  td.ln {
-    text-align: right;
-  }
-}
-
-li {
-  font: {
-    family: serif;
-    weight: bold;
-    size: 1.2em;
-  }
-}''', '', sass.SASS_STYLE_NESTED)
-
-	expected = b'''table.hl {
+scss_test_file = path.normpath(path.join(path.dirname(__file__), 'test.scss'))
+compiled_result = '''table.hl {
   margin: 2em 0; }
   table.hl td.ln {
     text-align: right; }
@@ -49,4 +29,17 @@ li {
   font-size: 1.2em; }
 '''
 
-	assert_equal(result, expected)
+
+class SASSTest(TestCase):
+
+    def test_compile_string_with_bad_string(self):
+        self.assertRaises(sass.CompileError, lambda: sass.compile_string('bad string'))
+
+    def test_compile_string(self):
+        with file(scss_test_file) as scss_file:
+            result = sass.compile_string(scss_file.read())
+        self.assertEqual(result, compiled_result)
+
+    def test_compile_file(self):
+        result = sass.compile_file(scss_test_file)
+        self.assertEqual(result, compiled_result)
