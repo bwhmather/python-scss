@@ -20,6 +20,7 @@ SASS_STYLE_COMPRESSED = 3
 
 __version__ = '2.2+libsass1.0.1'
 
+
 cdef extern from "libsass/sass_interface.h":
 
     cdef struct sass_options:
@@ -39,6 +40,8 @@ cdef extern from "libsass/sass_interface.h":
     cdef struct sass_file_context:
         char* input_path
         char* output_string
+        char* source_map_string
+        char* source_map_file
         sass_options options
         int error_status
         char* error_message
@@ -74,14 +77,16 @@ def compile_string(bytes s, include_paths=None, image_path=None, int output_styl
         sass_free_context(ctx)
 
 
-def compile_file(bytes path, include_paths=None, int output_style=SASS_STYLE_NESTED):
+def compile_file(bytes path, include_paths=None, image_path=None, int output_style=SASS_STYLE_NESTED):
     """Compiles SASS file to CSS string"""
 
     include_paths = include_paths or b''
+    image_path = image_path or b''
     cdef sass_file_context* ctx = sass_new_file_context()
     try:
         ctx.input_path = path
         ctx.options.include_paths = include_paths
+        ctx.options.image_path = image_path
         ctx.options.output_style = output_style
         sass_compile_file(ctx)
         if ctx.error_status:
