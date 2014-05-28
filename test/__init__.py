@@ -12,13 +12,15 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+from __future__ import unicode_literals
+
 from unittest import TestCase
 from os import path
 
 import sass
 
-scss_test_file = path.normpath(path.join(path.dirname(__file__), 'test.scss'))
-compiled_result = '''table.hl {
+scss_test_file = str(path.normpath(path.join(path.dirname(__file__), 'test.scss')))
+compiled_result = b'''table.hl {
   margin: 2em 0; }
   table.hl td.ln {
     text-align: right; }
@@ -33,10 +35,10 @@ li {
 class SASSTest(TestCase):
 
     def test_compile_string_with_bad_string(self):
-        self.assertRaises(sass.CompileError, lambda: sass.compile_string('bad string'))
+        self.assertRaises(sass.CompileError, lambda: sass.compile_string(b'bad string'))
 
     def test_compile_string(self):
-        with file(scss_test_file) as scss_file:
+        with file(scss_test_file, 'rb') as scss_file:
             result = sass.compile_string(scss_file.read())
         self.assertEqual(result, compiled_result)
 
