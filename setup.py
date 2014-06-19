@@ -65,6 +65,18 @@ ext_modules = [
     Extension('sass', sources, libraries=['stdc++'], library_dirs=['./libsass'],
               include_dirs=['.', 'libsass'], language='c++')]
 
+from setuptools.command.develop import develop
+from subprocess import check_call
+
+class update_submodules(develop):
+    def run(self):
+        print "retrieving libsass submodule"
+        if os.path.exists('.git'):
+            check_call(['git', 'submodule', 'update', '--init', '--recursive'])
+        develop.run(self)
+
+cmdclass["develop"] = update_submodules
+
 setup(
     name='sass',
     cmdclass=cmdclass,
