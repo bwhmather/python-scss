@@ -53,7 +53,7 @@ libsass_sources = [
     'libsass/source_map.cpp',
     'libsass/to_c.cpp',
     'libsass/to_string.cpp',
-    'libsass/units.cpp'
+    'libsass/units.cpp',
 ]
 
 if build_ext:
