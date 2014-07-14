@@ -27,8 +27,6 @@ except ImportError:
     print('No Cython installed. Building from pregenerated C source.')
     build_ext = None
 
-here = os.path.dirname(os.path.abspath(__file__))
-
 libsass_sources = [
     'libsass/ast.cpp',
     'libsass/base64vlq.cpp',
@@ -96,5 +94,4 @@ setup(
     license='Apache License 2.0',
     keywords='sass scss libsass',
     description='Python bindings for libsass',
-    long_description=open(os.path.join(here, 'README.rst'), 'rb').read().decode('utf-8')
 )
