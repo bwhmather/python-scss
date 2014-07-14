@@ -70,7 +70,7 @@ from subprocess import check_call
 
 class update_submodules(develop):
     def run(self):
-        print "retrieving libsass submodule"
+        print("retrieving libsass submodule")
         if os.path.exists('.git'):
             check_call(['git', 'submodule', 'update', '--init', '--recursive'])
         develop.run(self)
