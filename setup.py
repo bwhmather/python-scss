@@ -13,17 +13,19 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+import os.path
 
 from distutils.extension import Extension
 from setuptools import setup, Extension
 
+
 try:
     from Cython.Distutils import build_ext
 except ImportError:
+    if not os.path.exists('sass.cpp'):
+        raise
     print('No Cython installed. Building from pregenerated C source.')
     build_ext = None
-
-import os.path
 
 here = os.path.dirname(os.path.abspath(__file__))
 
