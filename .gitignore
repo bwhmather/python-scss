@@ -1,7 +1,6 @@
 /sass.cpp
-/dist/*
+/dist/
 /sass.egg-info/*
-/sass.so
-/sass.c
-build
+/sass.*.so
+/build/
 *.pyc
