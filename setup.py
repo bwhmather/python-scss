@@ -50,15 +50,15 @@ libsass_sources = [
     'libsass/units.cpp',
 ]
 
-if not os.path.exists('sass.cpp'):
+if os.path.exists('sass/_sass.cpp'):
+    sources = libsass_sources + ['sass/_sass.cpp']
+else:
     from setuptools.dist import Distribution
     Distribution(dict(setup_requires=['Cython']))
 
     from Cython.Distutils import build_ext
-    sources = libsass_sources + ['sass.pyx']
+    sources = libsass_sources + ['sass/_sass.pyx']
     cmdclass['build_ext'] = build_ext
-else:
-    sources = libsass_sources + ['sass.cpp']
 
 ext_modules = [
     Extension(
