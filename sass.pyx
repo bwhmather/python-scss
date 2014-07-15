@@ -58,11 +58,8 @@ cdef extern from "libsass/sass_interface.h":
 
 class CompileError(Exception): pass
 
-def compile_string(bytes s, include_paths=None, image_path=None, int output_style=SASS_STYLE_NESTED):
+def compile_string(bytes s, bytes include_paths, bytes image_path=None, int output_style=SASS_STYLE_NESTED):
     """Compiles SASS string to CSS"""
-
-    include_paths = include_paths or b''
-    image_path = image_path or b''
     cdef sass_context* ctx = sass_new_context()
     try:
         ctx.source_string = s
@@ -77,11 +74,8 @@ def compile_string(bytes s, include_paths=None, image_path=None, int output_styl
         sass_free_context(ctx)
 
 
-def compile_file(bytes path, include_paths=None, image_path=None, int output_style=SASS_STYLE_NESTED):
+def compile_file(bytes path, bytes include_paths=None, bytes image_path=None, int output_style=SASS_STYLE_NESTED):
     """Compiles SASS file to CSS string"""
-
-    include_paths = include_paths or b''
-    image_path = image_path or b''
     cdef sass_file_context* ctx = sass_new_file_context()
     try:
         ctx.input_path = path
