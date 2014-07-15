@@ -10,7 +10,9 @@ def compile_string(string, include_paths=b'', image_path=b'',
         include_paths = include_paths.encode()
     if not isinstance(image_path, bytes):
         image_path = image_path.encode()
-    return _sass.compile_string(string, include_paths, image_path, output_style)
+    return _sass.compile_string(
+        string, include_paths, image_path, output_style
+    )
 
 
 def compile_file(path, include_paths=b'', image_path=b'',
