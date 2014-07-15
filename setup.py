@@ -86,7 +86,6 @@ class develop(_develop):
         print("retrieving libsass submodule")
         if os.path.exists('.git'):
             check_call(['git', 'submodule', 'update', '--init', '--recursive'])
-        print(dir(self))
         super(develop, self).run()
 
 cmdclass['develop'] = develop
