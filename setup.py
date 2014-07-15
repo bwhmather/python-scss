@@ -15,17 +15,11 @@
 #
 import os.path
 
-from distutils.extension import Extension
-from setuptools import setup, Extension
+from setuptools import setup, Extension, find_packages
+from setuptools.command.sdist import sdist as _sdist
+from setuptools.command.develop import develop as _develop
 
-
-try:
-    from Cython.Distutils import build_ext
-except ImportError:
-    if not os.path.exists('sass.cpp'):
-        raise
-    print('No Cython installed. Building from pregenerated C source.')
-    build_ext = None
+cmdclass = {}
 
 libsass_sources = [
     'libsass/ast.cpp',
@@ -35,6 +29,7 @@ libsass_sources = [
     'libsass/context.cpp',
     'libsass/contextualize.cpp',
     'libsass/copy_c_str.cpp',
+    'libsass/emscripten_wrapper.cpp',
     'libsass/error_handling.cpp',
     'libsass/eval.cpp',
     'libsass/expand.cpp',
@@ -51,31 +46,50 @@ libsass_sources = [
     'libsass/source_map.cpp',
     'libsass/to_c.cpp',
     'libsass/to_string.cpp',
+    'libsass/trim.cpp',
     'libsass/units.cpp',
 ]
 
-if build_ext:
+from setuptools.dist import Distribution
+Distribution(dict(setup_requires=['Cython']))
+
+if not os.path.exists('sass.cpp'):
+    from Cython.Distutils import build_ext
     sources = libsass_sources + ['sass.pyx']
-    cmdclass = {'build_ext': build_ext}
+    cmdclass['build_ext'] = build_ext
 else:
     sources = libsass_sources + ['sass.cpp']
-    cmdclass = {}
 
 ext_modules = [
-    Extension('sass', sources, libraries=['stdc++'], library_dirs=['./libsass'],
-              include_dirs=['.', 'libsass'], language='c++')]
+    Extension(
+        'sass._sass', sources,
+        libraries=['stdc++'], library_dirs=['./libsass'],
+        include_dirs=['.', 'libsass'], language='c++'
+    ),
+]
 
-from setuptools.command.develop import develop
-from subprocess import check_call
 
-class update_submodules(develop):
+class sdist(_sdist):
     def run(self):
+        from Cython.Build import cythonize
+        print("pre-compiling cython")
+        cythonize(['sass.pyx'])
+
+        super(sdist, self).run()
+
+cmdclass['sdist'] = sdist
+
+
+class develop(_develop):
+    def run(self):
+        from subprocess import check_call
         print("retrieving libsass submodule")
         if os.path.exists('.git'):
             check_call(['git', 'submodule', 'update', '--init', '--recursive'])
-        develop.run(self)
+        print(dir(self))
+        super(develop, self).run()
 
-cmdclass["develop"] = update_submodules
+cmdclass['develop'] = develop
 
 setup(
     name='sass',
@@ -86,12 +100,10 @@ setup(
     author_email='sergey.kirillov@gmail.com',
     url='https://github.com/pistolero/python-scss',
     install_requires=[],
-    extras_require={
-        #    'develop': ['Cython']
-    },
-    tests_require=['nose'],
-    test_suite='test',
+    test_suite='sass.tests.suite',
+    packages=find_packages(),
     license='Apache License 2.0',
     keywords='sass scss libsass',
     description='Python bindings for libsass',
+    zip_safe=False,
 )
