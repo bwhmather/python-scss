@@ -73,7 +73,7 @@ class sdist(_sdist):
     def run(self):
         from Cython.Build import cythonize
         print("pre-compiling cython")
-        cythonize(['sass.pyx'])
+        cythonize(ext_modules)
 
         super(sdist, self).run()
 
