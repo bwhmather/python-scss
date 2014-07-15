@@ -45,7 +45,7 @@ class SASSTest(unittest.TestCase):
             self.fail()
 
     def test_compile_string(self):
-        with file(scss_test_file, 'rb') as scss_file:
+        with open(scss_test_file, 'rb') as scss_file:
             result = sass.compile_string(scss_file.read())
         self.assertEqual(result, compiled_result)
 
