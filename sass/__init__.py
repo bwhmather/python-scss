@@ -4,8 +4,10 @@ from sass._sass import (
     CompileError,
 )
 
+
 def compile_string(*args, **kwargs):
     return _compile_string(*args, **kwargs)
+
 
 def compile_file(*args, **kwargs):
     return _compile_file(*args, **kwargs)
