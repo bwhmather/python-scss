@@ -52,7 +52,7 @@ libsass_sources = [
 
 # If running from git repository, rebuild _sass.cpp from cython source,
 # otherwise assume nothing has changed
-if os.path.exists('sass/.git'):
+if os.path.exists('.git/'):
     # Force installation of Cython
     from setuptools.dist import Distribution
     Distribution(dict(setup_requires=['Cython']))
