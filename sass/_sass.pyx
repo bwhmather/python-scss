@@ -13,12 +13,6 @@
 #   limitations under the License.
 #
 
-SASS_STYLE_NESTED = 0
-SASS_STYLE_EXPANDED = 1
-SASS_STYLE_COMPACT = 2
-SASS_STYLE_COMPRESSED = 3
-
-
 cdef extern from "libsass/sass_interface.h":
 
     cdef struct sass_options:
@@ -56,7 +50,7 @@ cdef extern from "libsass/sass_interface.h":
 
 class CompileError(Exception): pass
 
-def compile_string(bytes s, bytes include_paths, bytes image_path=None, int output_style=SASS_STYLE_NESTED):
+def compile_string(bytes s, bytes include_paths, bytes image_path, int output_style):
     """Compiles SASS string to CSS"""
     cdef sass_context* ctx = sass_new_context()
     try:
@@ -72,7 +66,7 @@ def compile_string(bytes s, bytes include_paths, bytes image_path=None, int outp
         sass_free_context(ctx)
 
 
-def compile_file(bytes path, bytes include_paths=None, bytes image_path=None, int output_style=SASS_STYLE_NESTED):
+def compile_file(bytes path, bytes include_paths, bytes image_path, int output_style):
     """Compiles SASS file to CSS string"""
     cdef sass_file_context* ctx = sass_new_file_context()
     try:
