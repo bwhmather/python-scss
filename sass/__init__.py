@@ -23,6 +23,6 @@ def compile_file(path, include_paths=b'', image_path=b'',
         include_paths = include_paths.encode()
     if not isinstance(image_path, bytes):
         image_path = image_path.encode()
-    return _sass.compile_string(path, include_paths, image_path, output_style)
+    return _sass.compile_file(path, include_paths, image_path, output_style)
 
 __all__ = ['compile_string', 'compile_file', 'CompileError']
