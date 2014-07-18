@@ -50,15 +50,19 @@ libsass_sources = [
     'libsass/units.cpp',
 ]
 
-if os.path.exists('sass/_sass.cpp'):
-    sources = libsass_sources + ['sass/_sass.cpp']
-else:
+# If running from git repository, rebuild _sass.cpp from cython source,
+# otherwise assume nothing has changed
+if os.path.exists('sass/.git'):
+    # Force installation of Cython
     from setuptools.dist import Distribution
     Distribution(dict(setup_requires=['Cython']))
 
     from Cython.Distutils import build_ext
-    sources = libsass_sources + ['sass/_sass.pyx']
     cmdclass['build_ext'] = build_ext
+
+    sources = libsass_sources + ['sass/_sass.pyx']
+else:
+    sources = libsass_sources + ['sass/_sass.cpp']
 
 ext_modules = [
     Extension(
