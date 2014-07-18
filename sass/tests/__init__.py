@@ -13,15 +13,15 @@
 #   limitations under the License.
 #
 from __future__ import unicode_literals
+from pkg_resources import resource_filename
 
 import unittest
 from os import path
 
 import sass
 
-scss_test_file = str(path.normpath(
-    path.join(path.dirname(__file__), 'test.scss'))
-)
+scss_test_file = resource_filename(__name__, 'test.scss')
+
 compiled_result = b'''table.hl {
   margin: 2em 0; }
   table.hl td.ln {
