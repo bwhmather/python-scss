@@ -75,7 +75,7 @@ class sdist(_sdist):
         print("pre-compiling cython")
         cythonize(ext_modules)
 
-        super(sdist, self).run()
+        _sdist.run(self)
 
 cmdclass['sdist'] = sdist
 
@@ -86,7 +86,7 @@ class develop(_develop):
         print("retrieving libsass submodule")
         if os.path.exists('.git'):
             check_call(['git', 'submodule', 'update', '--init', '--recursive'])
-        super(develop, self).run()
+        _develop.run(self)
 
 cmdclass['develop'] = develop
 
