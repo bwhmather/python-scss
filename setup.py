@@ -43,11 +43,14 @@ libsass_sources = [
     'libsass/prelexer.cpp',
     'libsass/sass.cpp',
     'libsass/sass_interface.cpp',
+    'libsass/sass2scss/sass2scss.cpp',
     'libsass/source_map.cpp',
     'libsass/to_c.cpp',
     'libsass/to_string.cpp',
     'libsass/trim.cpp',
     'libsass/units.cpp',
+    'libsass/utf8_string.cpp',
+    'libsass/util.cpp',
 ]
 
 # If running from git repository, rebuild _sass.cpp from cython source,
