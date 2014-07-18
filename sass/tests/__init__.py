@@ -16,7 +16,6 @@ from __future__ import unicode_literals
 from pkg_resources import resource_filename
 
 import unittest
-from os import path
 
 import sass
 
