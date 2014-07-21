@@ -8,6 +8,7 @@ OUTPUT_STYLES = {
     'compressed': 3,
 }
 
+
 def compile_string(string, include_paths=b'', image_path=b'',
                    output_style='nested'):
     if not isinstance(string, bytes):
